@@ -9,7 +9,7 @@
 <style lang="scss">
     $themeC:#39b2e9;
     #body{
-        background: $themeC;
+        background: #fff;
     }
 </style>
 

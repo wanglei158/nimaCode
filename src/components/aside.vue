@@ -84,7 +84,7 @@
 						]
 					},
 					{
-						name:'基本信息',
+						name:'基础信息',
 						is_open:false,
 						children:[
 							{

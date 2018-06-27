@@ -1,5 +1,5 @@
 <template>
-    <div id="info_1">
-        shangjiaxinxi 
+    <div id="info">
+        <router-view></router-view>
     </div>
 </template>

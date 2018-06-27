@@ -1,13 +1,13 @@
 <template>
     <div id="head">
         <el-row type="flex" justify="space-between">
-            <el-col>
+            <el-col class="l_head">
+                <span>当前位置：</span>
                 <el-breadcrumb separator-class="el-icon-arrow-right">
                     <template v-for="(item,i) in urlList" >
                         <el-breadcrumb-item v-if="i==0"  :to="{ path: '/' }" :key="i">{{item.name}}</el-breadcrumb-item>
                         <el-breadcrumb-item v-else  :key="i">{{item.name}}</el-breadcrumb-item>
                     </template>
-                    
                 </el-breadcrumb>
             </el-col>
             <el-col class="r_head">
@@ -31,7 +31,6 @@
         },
         watch:{
             $route(to,from){
-                console.log(to,from);
                 this.urlList = to.matched;
             }
         },
@@ -59,7 +58,7 @@
         .el-breadcrumb{
             position: absolute;
             bottom: 0;
-            left:0;
+            left:5em;
             line-height: 24px;
             font-size:14px;
         }
@@ -79,6 +78,13 @@
             margin-top:15px;
             border-radius:50%;
             background: #e8e8e8;
+        }
+        .l_head>span{
+            font-size:14px;
+            position: absolute;
+            bottom:0;
+            left:0;
+            line-height: 24px;
         }
     }
 </style>
