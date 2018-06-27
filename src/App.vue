@@ -6,11 +6,15 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  mounted(){
+    document.getElementsByTagName("html")[0].style.fontSize = innerWidth * 0.01 + "px";
+  }
 }
 </script>
 
-<style>
+<style lang="scss">
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

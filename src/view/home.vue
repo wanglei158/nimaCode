@@ -42,7 +42,7 @@
             height:100%;
         }
         .el-main{
-            background:#f0f0f0;
+            background:#f8f8f8;
         }
     }
 </style>

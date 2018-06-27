@@ -2,26 +2,15 @@
 <template>
 	<div id="aside">
 		<div class="logo">
-			logo
+			COLORFUL
 		</div>
-		<el-menu  :unique-opened="true" @open="openR" text-color="#fff">
-			<el-submenu index="1">
+		<el-menu  :unique-opened="true" @open="openR" active-text-color="#39b2e9" text-color="#fff" background-color="#4e5768">
+			<el-submenu :index="(i+1).toString()" v-for="(item,i) in barList" :key="i">
 				<template slot="title">
-					订单管理
+					{{item.name}}
 				</template>
-				<el-menu-item index="1-1">商家姓名</el-menu-item>
-				<el-menu-item index="1-2">商家姓名1</el-menu-item>
+				<el-menu-item :index="(i+'-'+(j+1))" v-for="(jtem,j) in item.children" :key="j">{{jtem.name}}</el-menu-item>
 			</el-submenu>
-			<el-submenu index="2">
-				<template slot="title">
-					订单管理
-				</template>
-				<el-menu-item index="2-1">商家姓名</el-menu-item>
-				<el-menu-item index="2-2">商家姓名1</el-menu-item>
-			</el-submenu>
-			<el-menu-item index="3" >
-				<span slot="title">导航三</span>
-			</el-menu-item>
 		</el-menu>
 	</div>
 </template>
@@ -29,6 +18,96 @@
 <script>
 	import { Menu, Submenu, MenuItemGroup, MenuItem } from 'element-ui';
 	export default{
+		data(){
+			return {
+				barList:[
+					{
+						name:'订单管理',
+						is_open:true,
+						children:[
+							{
+
+							}
+						]
+					},
+					{
+						name:'商品管理',
+						is_open:false,
+						children:[
+							{
+								name:'新增商品',
+								url:''	
+							},
+							{
+								name:'本地仓库商品',
+								url:''	
+							},
+							{
+								name:'在线销售商品',
+								url:''	
+							},
+							{
+								name:'库存维护',
+								url:''	
+							},
+							{
+								name:'供货价维护',
+								url:''	
+							}
+						]
+					},
+					{
+						name:'分销管理',
+						is_open:false,
+						children:[
+							{
+								
+							}
+						]
+					},
+					{
+						name:'结算管理',
+						is_open:false,
+						children:[
+							{
+
+							}
+						]
+					},
+					{
+						name:'自助服务',
+						is_open:false,
+						children:[
+							{
+								
+							}
+						]
+					},
+					{
+						name:'基本信息',
+						is_open:false,
+						children:[
+							{
+								name:'商家信息',
+								url:''	
+							},
+							{
+								name:'修改密码',
+								url:''	
+							},
+							{
+								name:'在线联系',
+								url:''	
+							},
+							{
+								name:'关于平台',
+								url:''	
+							},
+						]
+					},
+				]
+			}
+		},
 		components:{
 			'el-menu':Menu,
 			'el-submenu':Submenu,
@@ -37,44 +116,28 @@
 		},
 		methods:{
 			openR(index){
-				console.log(index);
+				// console.log(index);
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
+	@import '@/assets/scss/color.scss';
 	#aside{
 		background:#393f47;
 		height:100%;
 		width:176px;
 		.logo{
-			height:90px;
-			color:#409eff;
+			line-height:90px;
+			color:$themeC;
 		}
 		.el-menu-item, .el-submenu__title{
 			height:40px;
 			line-height: 40px;
 		}
-		.is-opened .el-submenu__title{
-			background: #409eff;
-			color:#fff;
-		}
-		&>ul>li.el-menu-item,.el-submenu__title{
-			background:#92a0ad80;
-		}
-		&>ul.el-menu{
-			background: inherit;
+		&>.el-menu{
 			border:0;
-		}
-		&>ul>li{
-			margin-bottom: 4px;
-		}
-		.el-menu{
-			background: #393f47;
-		}
-		.el-submenu__title i{
-			color:#fff;
 		}
 	}
 </style>

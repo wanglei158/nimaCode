@@ -1,15 +1,15 @@
 <template>
     <div id="body">
         <div>
-            body
             <router-view></router-view>
         </div>
     </div>
 </template>
 
 <style lang="scss">
+    $themeC:#39b2e9;
     #body{
-        background: #fff;
+        background: $themeC;
     }
 </style>
 
