@@ -10,6 +10,7 @@ import I_Index from '@/view/info'
 import BaseInfo from '@/view/info/baseInfo';
 import ChangePwd from '@/view/info/change_pwd';
 
+
 Vue.use(Router)
 
 export default new Router({
