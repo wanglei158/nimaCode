@@ -10,6 +10,8 @@ import I_Index from '@/view/info'
 import BaseInfo from '@/view/info/baseInfo';
 import ChangePwd from '@/view/info/change_pwd';
 
+import Goods from '@/view/goods';
+import AddGoods from '@/view/goods/add.vue';
 
 Vue.use(Router)
 
@@ -35,6 +37,19 @@ export default new Router({
               path:'/info/changepwd',
               name:'修改密码',
               component:ChangePwd
+            }
+          ]
+        },
+        {
+          path:'/goods',
+          name:'商品管理',
+          redirect:'/goods/add',
+          component:Goods,
+          children:[
+            {
+              path:'/goods/add',
+              name:'新增商品',
+              component:AddGoods
             }
           ]
         }
