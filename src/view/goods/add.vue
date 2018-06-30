@@ -122,11 +122,11 @@
                     <div class="tank">
                         <div class="single">
                             <div class="head">
-                                <el-input v-model="specList[0].name" placeholder="填写规格名称一"></el-input>
+                                <el-input clearable v-model="specList[0].name" placeholder="填写规格名称一"></el-input>
                             </div>
                             <div class="content">
                                 <div class="spac_v" v-for="(item,i) in specList[0].children" :key="i">
-                                    <el-input v-model="item.name" placeholder="填写规格值1"></el-input>
+                                    <el-input clearable v-model="item.name" :placeholder="'填写规格值'+(i+1)"></el-input>
                                     <div class="picc" v-if="item.img" @click="clear(item)">
                                         <img  :src="item.img" alt="">
                                         <span>
@@ -145,6 +145,7 @@
                                             </el-button>
                                         </el-upload>
                                     </label>
+                                    <i class="el-icon-circle-close del" @click="deletey(specList[0].children,i)"></i>
                                 </div>
                                 <div class="spac_v" @click="addspecV(specList[0])">
                                     <i class="el-icon-plus"></i>
@@ -154,17 +155,103 @@
                         </div>
                         <div class="single">
                             <div class="head">
-                                <el-input v-model="value"  placeholder="填写规格名称二"></el-input>
+                                <el-input clearable v-model="specList[1].name"  placeholder="填写规格名称二"></el-input>
                             </div>
-                            <div class="content"></div>
+                            <div class="content">
+                                <div class="spac_v" v-for="(item,i) in specList[1].children" :key="i">
+                                    <el-input clearable v-model="item.name" :placeholder="'填写规格值'+(i+1)"></el-input>
+                                    <i class="el-icon-circle-close del" @click="deletey(specList[1].children,i)"></i>
+                                </div>
+                                <div class="spac_v" @click="addspecV(specList[1])">
+                                    <i class="el-icon-plus"></i>
+                                    规格值
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="gry8">
                     <i>*</i>
                     <span>SKU信息：</span>
-                    <div class="tank">
-
+                    <div class="tank tankt tankt2">
+                        <div class="head1">
+                            <li>{{specList[0].name||'规格一'}}</li>
+                            <li v-if="specList[1].name!=''">{{specList[1].name}}</li>
+                            <li>
+                                <i>*</i>供货价/元
+                                <p><el-input v-model="value" size="mini"></el-input></p>
+                            </li>
+                            <li>建议销售价/元<el-button>批量设置</el-button></li>
+                            <li><i>*</i>库存/件<el-button>批量设置</el-button></li>
+                            <li><i>*</i>商品货号<el-button>批量设置</el-button></li>
+                            <li>操作</li>
+                        </div>
+                        <div class="content12">
+                            <dl>
+                                <dt v-for="(item,i) in skuList" :key="i">
+                                    <li class="te">
+                                        <img :src="item.img" alt=""><span>{{item.spec1}}</span>
+                                    </li>
+                                    <li class="te" v-if="item.spec2" >
+                                        <img :src="item.img" alt=""><span >{{item.spec2}}</span>
+                                    </li>
+                                    <li>
+                                        <el-input size="mini" v-model="item.supplePrice"></el-input>
+                                    </li>
+                                    <li>
+                                        <el-input size="mini" v-model="item.advicePrice"></el-input>
+                                    </li>
+                                    <li>
+                                        <el-input size="mini" v-model="item.stock"></el-input>
+                                    </li>
+                                    <li>
+                                        <el-input size="mini" v-model="item.sdkNum"></el-input>
+                                    </li>
+                                    <li>
+                                        <b>下架</b>
+                                        <b>默认</b>
+                                    </li>
+                                </dt>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <template v-else>
+                <div class="gry8">
+                    <i>*</i>
+                    <span>SKU信息：</span>
+                    <div class="tank tankt">
+                        <div class="head1">
+                            <li>默认</li>
+                            <li><i>*</i>供货价/元</li>
+                            <li>建议销售价/元</li>
+                            <li><i>*</i>库存/件</li>
+                            <li><i>*</i>商品货号</li>
+                            <li>操作</li>
+                        </div>
+                        <div class="content1">
+                            <li>商品信息</li>
+                            <li>
+                                <el-input size="mini"></el-input>
+                            </li>
+                            <li>
+                                <el-input size="mini"></el-input>
+                            </li>
+                            <li>
+                                <el-input size="mini"></el-input>
+                            </li>
+                            <li>
+                                <el-input size="mini"></el-input>
+                            </li>
+                            <li>
+                                <el-button style="width:auto">下架</el-button>
+                                <el-button>默认</el-button>
+                            </li>
+                            <div class="stock">
+                                在线总库存：10/15件
+                            </div>
+                        </div>
                     </div>
                 </div>
             </template>
@@ -177,7 +264,7 @@
 </template>
 
 <script>
-    import { Steps, Step, Select, Input, Radio, Button, Upload } from 'element-ui';
+    import { Steps, Step, Select, Input, Radio, Button, Upload, } from 'element-ui';
     import { quillEditor } from 'vue-quill-editor';
     export default{
         data(){
@@ -202,20 +289,50 @@
                     },
                     {
                         name:'',
-                        children:[
-                            {
-                                name:'',
-                                img:'',
-                            }
-                        ]
+                        children:[]
                     }
-                ]
+                ],
             }
         },
         computed:{
             havSpec(){
                 let boo = this.radio12==1?false:true;
                 return boo;
+            },
+            skuList(){
+                let arr1 = this.specList[0].children;
+                let arr2 = this.specList[1].children;
+                let temp = [];
+                if(arr2.length==0||this.specList[1].name==''){
+                    arr1.map((item)=>{
+                        temp.push({
+                            spec1:item.name,
+                            spec2:'',
+                            img:item.img,
+                            supplePrice:'',
+                            advicePrice:'',
+                            stock:'',
+                            sdkNum:'',
+                            saling:false
+                        })
+                    })
+                }else{
+                    arr1.map((item)=>{
+                        arr2.map((jtem)=>{
+                            temp.push({
+                                spec1:item.name,
+                                spec2:jtem.name,
+                                img:item.img,
+                                supplePrice:'',
+                                advicePrice:'',
+                                stock:'',
+                                sdkNum:'',
+                                saling:false
+                            })
+                        })
+                    })
+                }
+                return temp;
             }
         },
         components:{
@@ -229,6 +346,9 @@
             quillEditor
         },
         methods:{
+            deletey(arr,i){
+                arr.splice(i,1);
+            },
             addspecV(obj){
                 obj.children.push({name:'',img:''});
             },
@@ -237,7 +357,6 @@
             },
             picchange(it,file){
                 this.curSpc.img = it.url;
-                console.log(it,file);
             },
             handleRemove(){
 
@@ -378,7 +497,7 @@
                 .head{
                     background:$gray;
                     line-height:60px;
-                    width:1243px;
+                    width:96%;
                     border-radius:6px;
                     margin:0 auto;
                 }
@@ -420,6 +539,13 @@
                         position: relative;
                         cursor: pointer;
                     }
+                    .del{
+                        position: absolute;
+                        top:-8px;
+                        left:-8px;
+                        font-size:16px;
+                        color:#999;
+                    }
                     .picc span{
                         position: absolute;
                         width:100%;
@@ -460,6 +586,117 @@
             .el-button:nth-child(2){
                 width:auto;
                 margin-left:36px;
+            }
+            .tankt{
+                padding:0;
+                .head1{
+                    display: flex;
+                    justify-content: space-between;
+                    line-height: 40px;
+                    background: $gray;
+                    i{
+                        color:$errcolor;
+                    }
+                }
+                .content1{
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 32px 0 80px 0;
+                    position: relative;
+                    .el-input{
+                        width:160px;
+                    }
+                    .el-button{
+                        padding:6px 20px;
+                    }
+                    .stock{
+                        position: absolute;
+                        left:12px;
+                        bottom:12px;
+                    }
+                    .el-button:nth-child(2){
+                        margin-left:6px;
+                    }
+                    li{
+                        line-height: 28px;
+                    }
+                }
+                li{
+                    list-style: none;
+                    text-align: center;
+                    width:15%;
+                }
+            }
+            .tankt2{
+                .head1{
+                    box-sizing: border-box;
+                    padding-top:17px; 
+                    height:78px;
+                    line-height: 1;
+                    .el-input{
+                        width:80%;
+                        margin-top:4px;
+                    }
+                    .el-button{
+                        width:80%;
+                        margin-top:4px;
+                        height:28px;
+                        line-height: 28px;
+                        padding:0;
+                        font-size:12px;
+                        background: $gray;
+                        color:$qian;
+                    }
+                    .el-button:nth-child(2){
+                        margin-left:0;
+                    }
+                }
+                dl {
+                    li{
+                        box-sizing: border-box;
+                    }
+                    .el-input{
+                        width:80%;
+                    }
+                    dt{
+                        display: flex;
+                        justify-content: space-between;
+                        height: 54px;
+                        line-height: 54px;
+                    }
+                    img{
+                        margin-top:7px;
+                        width:40px;
+                        height:40px;
+                    }
+                    .te{
+                        display:flex;
+                        justify-content:start;
+                        padding-left:24px;
+                        span{
+                            margin-left:2px;
+                            width: 70%;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-align: left;
+                        }
+                        overflow: hidden;
+                    }
+                    li:last-child{
+                        display: flex;
+                        box-sizing: border-box;
+                        justify-content: center;
+                        b{
+                            font-weight: 500;
+                            color:$themeC;
+                            cursor: pointer;
+                            &:nth-child(2){
+                                margin-left:24px;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
