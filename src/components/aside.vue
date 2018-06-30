@@ -4,12 +4,12 @@
 		<div class="logo">
 			COLORFUL
 		</div>
-		<el-menu  :unique-opened="true" @open="openR" active-text-color="#39b2e9" text-color="#fff" background-color="#4e5768">
+		<el-menu :unique-opened="true" active-text-color="#39b2e9" text-color="#fff" background-color="#4e5768">
 			<el-submenu :index="(i+1).toString()" v-for="(item,i) in barList" :key="i">
 				<template slot="title">
 					{{item.name}}
 				</template>
-				<el-menu-item :index="(i+'-'+(j+1))" v-for="(jtem,j) in item.children" :key="j">{{jtem.name}}</el-menu-item>
+				<el-menu-item :index="(i+'-'+(j+1))" @click="jumpto(jtem.url)" v-for="(jtem,j) in item.children" :key="j">{{jtem.name}}</el-menu-item>
 			</el-submenu>
 		</el-menu>
 	</div>
@@ -36,11 +36,11 @@
 						children:[
 							{
 								name:'新增商品',
-								url:''	
+								url:'/goods/add'	
 							},
 							{
 								name:'本地仓库商品',
-								url:''	
+								url:'/goods/factory'	
 							},
 							{
 								name:'在线销售商品',
@@ -115,9 +115,9 @@
 			'el-menu-item':MenuItem
 		},
 		methods:{
-			openR(index){
-				// console.log(index);
-			}
+			jumpto(path){
+				this.$router.push({path:path});
+			},
 		}
 	}
 </script>

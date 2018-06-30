@@ -12,6 +12,7 @@ import ChangePwd from '@/view/info/change_pwd';
 
 import Goods from '@/view/goods';
 import AddGoods from '@/view/goods/add.vue';
+import Factory from '@/view/goods/localfactory';
 
 Vue.use(Router)
 
@@ -50,6 +51,11 @@ export default new Router({
               path:'/goods/add',
               name:'新增商品',
               component:AddGoods
+            },
+            {
+              path:'/goods/factory',
+              name:'本地仓库商品',
+              component:Factory
             }
           ]
         }
