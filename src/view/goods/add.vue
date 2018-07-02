@@ -108,7 +108,7 @@
                 <el-button>返回</el-button>
             </div>
         </div>
-        <div class="a3">
+        <div class="a3" v-if="true">
             <div class="gry8">
                 <i>*</i>
                 <span>规格类型：</span>

@@ -89,11 +89,11 @@
 						children:[
 							{
 								name:'商家信息',
-								url:''	
+								url:'/info/base'	
 							},
 							{
 								name:'修改密码',
-								url:''	
+								url:'/info/changepwd'	
 							},
 							{
 								name:'在线联系',
