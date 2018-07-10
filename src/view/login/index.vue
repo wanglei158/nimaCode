@@ -49,7 +49,7 @@
             'el-button':Button
         },
         mounted(){
-            
+
         }
     }
 </script>
@@ -100,7 +100,7 @@
             width:32.5rem;
             height: 30.052rem;
             background:url(/static/img/icon_biankuang.png) no-repeat;
-            background-size:cover; 
+            background-size:cover;
             box-sizing: border-box;
             padding-top:7.708rem;
         }

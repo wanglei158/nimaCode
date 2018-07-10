@@ -33,4 +33,7 @@ ul,li{
 html,body{
   height:100%;
 }
+.el-main {
+  padding: 16px; // 设置边框间距
+}
 </style>

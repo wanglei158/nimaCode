@@ -27,7 +27,7 @@
                 <p class="salearea">
                     <i>*</i>
                     <span>经营范围：</span>
-                    <el-checkbox-group 
+                    <el-checkbox-group
                         @change="getall"
                         v-model="checkedCities1">
                         <el-checkbox v-for="city in cities" :label="city.label" :key="city.label">{{city.name}}</el-checkbox>
@@ -47,7 +47,7 @@
                         </el-upload>
                         <el-input class="namel" v-model="input" placeholder="请填写名称"></el-input>
                     </p>
-                    
+
                 </div>
             </div>
             <h3>联系人信息</h3>
@@ -60,7 +60,7 @@
             </div>
             <h3>结算信息</h3>
             <div class="k4">
-                <p><i>*</i><span>开户名：</span><el-input v-model="input" ></el-input></p> 
+                <p><i>*</i><span>开户名：</span><el-input v-model="input" ></el-input></p>
                 <p>
                     <i>*</i><span>开户地区：</span>
                     <el-select v-model="value" placeholder="请选择" v-for="i in 2" :key="i">
@@ -74,14 +74,14 @@
                 </p>
                 <p><i>*</i><span>开户银行：</span><el-input v-model="input" ></el-input></p>
                 <p><i>*</i><span>开户账号：</span><el-input v-model="input" ></el-input></p>
-                <p><span>持卡人：</span><el-input v-model="input" ></el-input></p> 
+                <p><span>持卡人：</span><el-input v-model="input" ></el-input></p>
                 <p><i>*</i><span>结算方式：</span><el-radio v-model="radio" :label="1">款到发货</el-radio></p>
                 <p>
                     <el-button>保存</el-button>
                     <el-button>返回</el-button>
                 </p>
-            </div> 
-        </template> 
+            </div>
+        </template>
         <template v-else>
             <info-watch />
         </template>
@@ -179,7 +179,7 @@
 <style lang="scss">
     @import '@/assets/scss/color.scss';
     #info_1{
-        padding-top:40px; 
+        padding-top:40px;
         &>.k1,.k2,.k3,.k4{
             text-align:left;
             margin-left:72px;

@@ -16,7 +16,7 @@
                 <div class="logout">退出登录</div>
             </el-col>
         </el-row>
-        
+
     </div>
 </template>
 
@@ -48,9 +48,12 @@
 
 <style lang="scss">
     @import '@/assets/scss/color.scss';
+    .el-header {
+      padding: 10px 20px;
+    }
     #head{
         .el-row{
-            height:60px;
+            height:40px;
         }
         .el-col{
             position: relative;
@@ -65,7 +68,7 @@
         .r_head{
             display: flex;
             justify-content: flex-end;
-            line-height: 60px;
+            line-height: 40px;
             color:$themeC;
             font-size:14px;
             &>div{
@@ -75,7 +78,7 @@
         .tur{
             width:30px;
             height:30px;
-            margin-top:15px;
+            margin-top:5px;
             border-radius:50%;
             background: #e8e8e8;
         }
