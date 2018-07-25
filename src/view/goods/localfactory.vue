@@ -45,13 +45,13 @@
                 :header-cell-style="getHead"
                 ref="table"
             >
-                <el-table-column 
-                    type="selection" 
+                <el-table-column
+                    type="selection"
                     width="55"
                 >
-                    
+
                 </el-table-column>
-                <el-table-column 
+                <el-table-column
                     label="商品信息"
                     width="565"
                 >
@@ -67,40 +67,40 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column 
+                <el-table-column
                     prop="supplyPrice"
                     label="供货价/元"
                 >
-                    
+
                 </el-table-column>
-                <el-table-column 
+                <el-table-column
                     prop="saleNum"
                     label="销量"
                 >
-                    
+
                 </el-table-column>
-                <el-table-column 
+                <el-table-column
                     prop="stock"
                     label="库存/件"
                 >
-                    
+
                 </el-table-column>
-                <el-table-column 
+                <el-table-column
                     prop="updateTime"
                     label="更新时间"
                 >
-                    
+
                 </el-table-column>
-                <el-table-column 
+                <el-table-column
                     prop="status"
                     label="商品状态"
                 >
-                    
+
                 </el-table-column>
-                <el-table-column 
+                <el-table-column
                     label="操作"
                 >
-                    
+
                 </el-table-column>
             </el-table>
             <div class="bot_bar">
@@ -139,7 +139,7 @@
     export default {
         data(){
             return{
-                dialogTableVisible:true,
+                dialogTableVisible:false,
                 value:'',
                 options:[],
                 checked:false,
@@ -223,7 +223,7 @@
                 color:#fff;
             }
         }
-        
+
         .head1{
             box-sizing: border-box;
             margin-bottom: 16px;
@@ -288,7 +288,7 @@
             }
         }
         .bot_bar{
-            padding-bottom:40px; 
+            padding-bottom:40px;
             label{
                 line-height: 32px;
             }

@@ -3,19 +3,19 @@
         <p>
             <i>*</i>
             <span>原密码：</span>
-            <el-input clearable v-model="input" placeholder="请输入内容"></el-input>
+            <el-input clearable v-model="currentPassword" placeholder="请输入内容"></el-input>
             <b>原密码输入错误</b>
         </p>
         <p>
             <i>*</i>
             <span>新密码：</span>
-            <el-input clearable v-model="input" placeholder="请输入内容"></el-input>
+            <el-input clearable v-model="newPassword" placeholder="请输入内容"></el-input>
             <b>原密码输入错误</b>
         </p>
         <p>
             <i>*</i>
             <span>确认密码：</span>
-            <el-input clearable v-model="input" placeholder="请输入内容"></el-input>
+            <el-input clearable v-model="newPassword" placeholder="请输入内容"></el-input>
             <b>原密码输入错误</b>
         </p>
         <div class="such">
@@ -24,7 +24,7 @@
             <p>2、密码只允许设置大小写字母、数字。</p>
         </div>
         <div class="opt">
-            <el-button>修改</el-button>
+            <el-button @click="changePassword">修改</el-button>
             <el-button>返回</el-button>
         </div>
     </div>
@@ -36,13 +36,26 @@
     export default {
         data(){
             return {
-                input:''
+                currentPassword:'',
+                newPassword:'',
             }
         },
         components:{
             'el-input':Input,
             'el-button':Button
         },
+        methods:{
+          changePassword(){
+            this.axios
+            .post("/api/account/change-password",{
+              currentPassword:this.currentPassword,
+              newPassword:this.newPassword,
+            })
+            .then(res=>{
+              console.log(res);
+            })
+          }
+        }
     }
 </script>
 
@@ -87,7 +100,7 @@
                 border-color:$errcolor;
             }
         }
-        
+
         .such{
             color:$themeC;
             font-size:12px;
