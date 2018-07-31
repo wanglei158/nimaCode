@@ -11,8 +11,10 @@
         </el-breadcrumb>
       </el-col>
       <el-col class="r_head">
-        <div class="tur"></div>
-        <div class="user">lufeihua@qq.com</div>
+        <div class="tur">
+          <img :src="userInfo.imgUrl">
+        </div>
+        <div class="user">{{userInfo.userName}}</div>
         <div class="logout" @click="loginOut">退出登录</div>
       </el-col>
     </el-row>
@@ -35,7 +37,12 @@ import api from "../api/api";
 export default {
   data() {
     return {
-      urlList: []
+      urlList: [],
+      // 用户数据
+      userInfo:{
+        imgUrl:'', // 用户头像
+        userName:'' // 用户名字
+      },
     };
   },
   watch: {
@@ -53,6 +60,13 @@ export default {
   },
   mounted() {
     this.urlList = this.$route.matched;
+    this.axios.get(api.apiUrl.getUserInfo)
+    .then(res=>{
+      if(res.status==200){
+        this.userInfo.imgUrl = api.baseUrl+res.data.imgUrl;
+        this.userInfo.userName = res.data.userName;
+      }
+    })
   },
   methods: {
     loginOut() {
@@ -127,6 +141,11 @@ export default {
     margin-top: 5px;
     border-radius: 50%;
     background: #e8e8e8;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
   .l_head > span {
     font-size: 14px;

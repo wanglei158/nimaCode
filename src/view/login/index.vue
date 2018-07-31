@@ -101,7 +101,7 @@ export default {
             this.$store.commit("set_token", res.data["id_token"]);
             // 如果store的token存在，则跳转至首页，否则，则跳转至登录页
             if (store.state.token) {
-              this.$router.push("/");
+              this.$router.push("/goods/add");
             } else {
               this.$router.replace("/login");
             }

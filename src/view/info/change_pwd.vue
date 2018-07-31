@@ -25,7 +25,7 @@
         </div>
         <div class="opt">
             <el-button @click="changePassword">修改</el-button>
-            <el-button>返回</el-button>
+            <el-button @click="goBack">返回</el-button>
         </div>
     </div>
 </template>
@@ -45,6 +45,10 @@
             'el-button':Button
         },
         methods:{
+          // 返回上一级
+          goBack(){
+            this.$router.go(-1);
+          },
           changePassword(){
             this.axios
             .post("/api/account/change-password",{

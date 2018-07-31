@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { Menu, Submenu, MenuItemGroup, MenuItem } from "element-ui";
+import { Menu, Submenu, MenuItemGroup, MenuItem,Message,MessageBox } from "element-ui";
 export default {
   data() {
     return {
@@ -124,10 +124,22 @@ export default {
     "el-menu": Menu,
     "el-submenu": Submenu,
     "el-menu-item-group": MenuItemGroup,
-    "el-menu-item": MenuItem
+    "el-menu-item": MenuItem,
+    "el-message-box": MessageBox,
+    "el-message": Message,
   },
   methods: {
     jumpto(path) {
+      console.log(path);
+      if(!path){
+        MessageBox({
+          title:'暂无此页面',
+          showClose: true,
+          type:'warning',
+          message:'功能还在开发中，请耐心等待一下...',
+        });
+        return;
+      }
       this.$router.push({ path: path });
     }
   }

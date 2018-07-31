@@ -12,12 +12,12 @@
       <p>
         <i class="required">*</i>
         <span>平台分类：</span>
-        <el-select v-model="basicInfo.classifyFirstValue" placeholder="请选择" @focus.stop="selectGoodsList">
-          <el-option v-for="item in basicInfoStorage.classify.classifyFirst" :key="item.value" :label="item.label" :value="item.value">
+        <el-select v-model="basicInfo.classifyFirstValue" placeholder="请选择一级分类" @focus.stop="selectGoodsList(false)">
+          <el-option v-for="(item,index) in basicInfoStorage.classify.classifyFirst" :key="index" :label="item.catName" :value="item.catId">
           </el-option>
         </el-select>
-        <el-select v-model="basicInfo.classifySecondValue" placeholder="请选择" @focus.stop="selectGoodsList">
-          <el-option v-for="item in basicInfoStorage.classify.classifySecond" :key="item.value" :label="item.label" :value="item.value">
+        <el-select v-model="basicInfo.classifySecondValue" placeholder="请选择二级分类" @focus.stop="selectGoodsList(true)" :disabled="basicInfo.classifyFirstValue?true:false">
+          <el-option v-for="(item,index) in basicInfoStorage.classify.classifySecond" :key="index" :label="item.catName" :value="item.catId">
           </el-option>
         </el-select>
       </p>
@@ -34,7 +34,7 @@
       <p>
         <i class="required">*</i>
         <span>商品单位：</span>
-        <el-select v-model="basicInfo.goodsSpec" placeholder="请选择单位" @focus.stop="selectGoodsList">
+        <el-select v-model="basicInfo.goodsSpec" placeholder="请选择单位">
           <el-option v-for="item in basicInfoStorage.goodsSpecList" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
@@ -127,13 +127,13 @@
               <div class="content">
                 <div class="spac_v" v-for="(item,i) in specInfo.haveSpecType.specList[0].specDetail" :key="i">
                   <el-input clearable v-model="item.specValue" :placeholder="'填写规格值'+(i+1)"></el-input>
-                  <div class="picc" v-if="item.specImg" @click="clear(item)">
+                  <div class="picc" v-if="item.specImg" @click.stop="clear(item)">
                     <img :src="item.specImg" alt="">
                     <span>
                       <i class="el-icon-delete"></i>
                     </span>
                   </div>
-                  <label @click="curSpc=item" v-else>
+                  <label @click.stop="curSpc=item" v-else>
                     规格图片
                     <el-upload v-show="false" :limit="1" :on-change="picchange" action="https://jsonplaceholder.typicode.com/posts/">
                       <el-button>
@@ -141,9 +141,9 @@
                       </el-button>
                     </el-upload>
                   </label>
-                  <i class="el-icon-circle-close del" @click="deletey(specInfo.haveSpecType.specList[0].specDetail,i)"></i>
+                  <i class="el-icon-circle-close del" @click.stop="deletey(specInfo.haveSpecType.specList[0].specDetail,i)"></i>
                 </div>
-                <div class="spac_v" @click="addspecV(specInfo.haveSpecType.specList[0])">
+                <div class="spac_v" @click.stop="addspecV(specInfo.haveSpecType.specList[0])">
                   <i class="el-icon-plus"></i>
                   规格值
                 </div>
@@ -151,14 +151,14 @@
             </div>
             <div class="single">
               <div class="head">
-                <el-input clearable v-model="specInfo.haveSpecType.specList[1].specValue" placeholder="填写规格名称二"></el-input>
+                <el-input clearable v-model="specInfo.haveSpecType.specList[1].specName" placeholder="填写规格名称二"></el-input>
               </div>
               <div class="content">
                 <div class="spac_v" v-for="(item,i) in specInfo.haveSpecType.specList[1].specDetail" :key="i">
                   <el-input clearable v-model="item.specValue" :placeholder="'填写规格值'+(i+1)"></el-input>
-                  <i class="el-icon-circle-close del" @click="deletey(specInfo.haveSpecType.specList[1].specDetail,i)"></i>
+                  <i class="el-icon-circle-close del" @click.stop="deletey(specInfo.haveSpecType.specList[1].specDetail,i)"></i>
                 </div>
-                <div class="spac_v" @click="addspecV(specInfo.haveSpecType.specList[1])">
+                <div class="spac_v" @click.stop="addspecV(specInfo.haveSpecType.specList[1])">
                   <i class="el-icon-plus"></i>
                   规格值
                 </div>
@@ -171,8 +171,8 @@
           <span>SKU信息：</span>
           <div class="tank tankt tankt2">
             <div class="head1">
-              <li>{{specInfo.haveSpecType.specList[0].specValue||'规格一'}}</li>
-              <li v-if="specInfo.haveSpecType.specList[1].specValue!=''">{{specInfo.haveSpecType.specList[1].specValue}}</li>
+              <li>{{specInfo.haveSpecType.specList[0].specName||'规格一'}}</li>
+              <li v-if="specInfo.haveSpecType.specList[1].specName!=''">{{specInfo.haveSpecType.specList[1].specName}}</li>
               <li>
                 <i class="required">*</i>供货价/元
                 <p>
@@ -322,47 +322,66 @@ export default {
         // 存储商品分类信息
         classify: {
           classifyFirst: [
-            {
-              value: "选项一",
-              label: "生活用品"
-            },
-            {
-              value: "选项二",
-              label: "厨房用品"
-            },
-            {
-              value: "选项三",
-              label: "电器"
-            }
+            // {
+            //   catId: "370",
+            //   catName: "生活用品"
+            // }
           ],
-
           classifySecond: [
             {
-              value: "选项一",
-              label: "电风扇"
-            },
-            {
-              value: "选项二",
-              label: "微波炉"
-            },
-            {
-              value: "选项三",
-              label: "席梦思"
+              catId: "选项一",
+              catName: "电风扇"
             }
           ]
         },
         goodsSpecList: [
           {
             value: "选项一",
-            label: "斤"
+            label: "件"
           },
           {
             value: "选项二",
-            label: "箱"
+            label: "个"
           },
           {
             value: "选项三",
+            label: "台"
+          },
+          {
+            value: "选项1",
+            label: "袋"
+          },
+          {
+            value: "选项2",
+            label: "包"
+          },
+          {
+            value: "选项3",
+            label: "箱"
+          },
+          {
+            value: "选项4",
+            label: "桶"
+          },
+          {
+            value: "选项5",
+            label: "克"
+          },
+          {
+            value: "选项6",
+            label: "千克"
+          },
+          {
+            value: "选项7",
             label: "米"
+          },
+          {
+            value: "选项8",
+            label: "升"
+          },
+          {
+            value: "选项9",
+            label: "其他"
           }
         ]
       },
@@ -379,35 +398,35 @@ export default {
           specList: [
             {
               specName: "填充字段", // 规格名称
-              specDetail: [{
-                specValue: "11", // 规格值
-                specImg: "" // 规格图片
-              },
-              {
-                specValue: "11", // 规格值
-                specImg: "" // 规格图片
-              }]
+              specDetail: [
+                {
+                  specValue: "11", // 规格值
+                  specImg: "" // 规格图片
+                },
+                {
+                  specValue: "11", // 规格值
+                  specImg: "" // 规格图片
+                }
+              ]
             },
             {
-              specName: "", // 规格名称
-              specDetail: [{
-                specValue: "", // 规格值
-                specImg: "" // 规格图片
-              },
-              {
-                specValue: "", // 规格值
-                specImg: "" // 规格图片
-              }]
+              specName: "规格二名称1", // 规格名称
+              specDetail: [
+                {
+                  specValue: "规格二规格1", // 规格值
+                  specImg: "" // 规格图片
+                },
+                {
+                  specValue: "规格二规格2", // 规格值
+                  specImg: "" // 规格图片
+                }
+              ]
             }
           ], // 规格名称表格
           skuInfo: {
             supplyPrice: "1", // 供货价
-            skuList:[{
-            },
-            {
-
-            }],
-          }// Sku信息
+            skuList: [{}, {}]
+          } // Sku信息
         }, // 有商品规格
         notHaveSpecType: {
           supplyPrice: "1", // 供货价
@@ -420,7 +439,7 @@ export default {
       // content: "",
 
       curSpc: {}, // 暂时存储规格图片对象
-      editorOption: {}, // 富文本编辑器的对象
+      editorOption: {} // 富文本编辑器的对象
     };
   },
   computed: {
@@ -432,7 +451,10 @@ export default {
       let arr1 = this.specInfo.haveSpecType.specList[0].specDetail;
       let arr2 = this.specInfo.haveSpecType.specList[1].specDetail;
       let temp = [];
-      if (arr2.length == 0 || this.specInfo.haveSpecType.specList[1].specValue == "") {
+      if (
+        arr2.length == 0 ||
+        this.specInfo.haveSpecType.specList[1].specValue == ""
+      ) {
         arr1.map(item => {
           temp.push({
             spec1: item.specValue,
@@ -485,9 +507,52 @@ export default {
     handleRemove() {},
     onEditorReady() {},
     // 选择平台分类
-    selectGoodsList() {
-      console.log(1);
-      this.axios.get(api.apiUrl.selectGoodsList).then(res => {});
+    selectGoodsList(params) {
+      if (params) {
+        console.log("存在");
+        this.axios
+          .post(
+            api.apiUrl.selectGoodsList,
+            this.qs({
+              catId: this.basicInfo.classifyFirstValue
+            })
+          )
+          .then(res => {
+            console.log(res);
+            for (var i = 0; i < res.data.length; i++) {
+              const newCat = {
+                catId: res.data[i].catId,
+                catName: res.data[i].catName
+              };
+              this.basicInfoStorage.classify.classifySecond.push(newCat);
+            }
+          })
+          .catch(error => {
+            console.log("错误");
+          });
+      } else {
+        console.log("不存在");
+        this.axios
+          .post(
+            api.apiUrl.selectGoodsList,
+            this.qs({
+              catId: 0
+            })
+          )
+          .then(res => {
+            console.log(res);
+            for (var i = 0; i < res.data.length; i++) {
+              const newCat = {
+                catId: res.data[i].catId,
+                catName: res.data[i].catName
+              };
+              this.basicInfoStorage.classify.classifyFirst.push(newCat);
+            }
+          })
+          .catch(error => {
+            console.log("错误");
+          });
+      }
     }
   },
   mounted() {}
