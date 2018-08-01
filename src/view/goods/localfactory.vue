@@ -59,13 +59,18 @@
 
         </el-table-column>
         <el-table-column label="操作">
-
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="handleCancel(scope.row)">取消申请</el-button>
+            <el-button type="text" size="small" @click="handleApply(scope.row)">销售申请</el-button>
+            <el-button type="text" size="small" @click="handleChange(scope.row)">修改</el-button>
+            <el-button type="text" size="small" @click="handleDelete(scope.row)">删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
       <div class="bot_bar">
         <el-checkbox v-model="checked" @change="selectAll">全选</el-checkbox>
         <el-button size="mini">删除</el-button>
-        <el-pagination layout="prev, pager, next" :total="30" :page-size="10">
+        <el-pagination layout="prev, pager, next" :total="pageArgument.total" :page-count="pageArgument.totalPage" :page-size="paramsData.size" :current-page.sync="currentPage" @current-change="handleCurrentChange">
         </el-pagination>
       </div>
     </div>
@@ -85,7 +90,9 @@
         <el-table-column property="" label="库存" width="150"></el-table-column>
         <el-table-column property="" label="销量" width="200"></el-table-column>
         <el-table-column property="" label="商品货号"></el-table-column>
-        <el-table-column property="" label="操作" width="150"></el-table-column>
+        <el-table-column property="" label="操作" width="150">
+
+        </el-table-column>
       </el-table>
     </el-dialog>
   </div>
@@ -119,14 +126,14 @@ export default {
   data() {
     return {
       paramsData: {
-        goodsName: "商品标题",
-        goodsId: "",
-        productNo: "11",
-        status: 1, // 商品状态
-        page: 1, // 第几页，默认第0页开始
-        size: 10, // 每页的数量
-        isDrafts: 0, // 默认为0，点到草稿箱的时候为1
-        catIds:1 // 商品分类
+        // goodsName: "测试数据",
+        goodsId: "1",
+        // productNo: "",
+        // status: "", // 商品状态
+        page: 0, // 第几页，默认第0页开始，实际传送页码
+        size: 3, // 每页的数量
+        // isDrafts: "", // 默认为0，点到草稿箱的时候为1
+        // catIds: "" // 商品分类
       },
       // 存储商品分类信息
       classify: {
@@ -153,56 +160,111 @@ export default {
           }
         ]
       },
+      goodsLocalDTO: {
+        brandId: 1,
+        brandStory: "string",
+        dataFlag: 1,
+        goodsCatId: 372,
+        goodsCatIdPath: "371_371",
+        goodsDesc: "商品介绍",
+        goodsId: 1,
+        goodsImg: "",
+        goodsName: "商品11",
+        goodsSeoKeywords: "cccccc",
+        goodsSn: 122323,
+        goodsStatus: 1,
+        goodsStock: 12,
+        goodsType: 1,
+        goodsUnit: "商品单位",
+        goodsVido: "",
+        id: 12,
+        isDrafts: 0,
+        isFinished: 0,
+        isFreeShipping: 0,
+        isSale: 1,
+        isSpec: 1,
+        marketPrice: 122,
+        productNo: "sccccc11111",
+        recomReason: "",
+        saleTime: "",
+        shopId: 1,
+        shopPrice: 22222,
+        warnStock: 1
+      },
       dialogTableVisible: false,
       value: "",
       options: [],
       checked: false,
+      // 页码参数
+      pageArgument: {
+        // total: 30,
+        // totalPage: 2
+      },
+      currentPage: 1, // 当前页
+      // 存储数据
       tableData: [
-        {
-          goodsImg: "",
-          goodsName:
-            "满哪儿2015秋款韩版长袖连衣裙5秋款韩版长袖连衣裙5秋款韩版长袖连衣裙5秋款韩版长袖连衣裙5秋款韩版长袖连衣裙",
-          goodsId: "20157682",
-          type: "美食》》茶与咖啡",
-          marketPrice: "100.00",
-          saleNum: 10,
-          goodsStock: 400,
-          updateTime: "2018-07-18 10:12:13",
-          goodsStatus: "待审核"
-        },
-        {
-          goodsImg: "",
-          goodsName: "满哪儿2015秋款韩版长袖连衣裙",
-          goodsId: "20157682",
-          type: "美食》》茶与咖啡",
-          marketPrice: "1020.00",
-          saleNum: 10,
-          goodsStock: 400,
-          updateTime: "2018-07-18 10:12:13",
-          goodsStatus: "待审核"
-        }
+        // {
+        //   goodsImg: "", // 图片地址，目前为空
+        //   goodsName: // 商品名称
+        //     "满哪儿2015秋款韩版长袖连衣裙5秋款韩版长袖连衣裙5秋款韩版长袖连衣裙5秋款韩版长袖连衣裙5秋款韩版长袖连衣裙",
+        //   goodsId: "20157682", // goodsId
+        //   type: "美食》》茶与咖啡",
+        //   marketPrice: "100.00", // 供货价
+        //   saleNum: 10, // 销量，缺少字段
+        //   goodsStock: 400, // 库存，缺少字段
+        //   updateTime: "2018-07-18 10:12:13", // 更新时间，缺少字段
+        //   goodsStatus: "待审核" // 商品状态，缺少状态判断
+        // },
       ],
       gridData: [{ color: "红色" }, { color: "绿色" }]
     };
   },
   mounted() {
-    // this.axios
-    //   .get(api.apiUrl.findAllGoodsList, {
-    //     params: {
-    //       page: 0,
-    //       size: 10
-    //     }
-    //   })
-    //   .then(res => {
-    //     if (res.status == 200) {
-    //       console.log(res);
-    //     }
-    //   })
-    //   .catch(res => {
-    //     console.log(res);
-    //   });
+    // 默认请求一次
+    this.axios
+      .post(api.apiUrl.findAllGoodsListBySearch, this.qs(this.paramsData))
+      .then(res => {
+        this.tableData = res.data.data;
+        this.pageArgument.total = res.data.total;
+        this.pageArgument.totalPage = res.data.totalPage;
+        console.log(res);
+      })
+      .catch(res => {
+        console.log("bad");
+      });
   },
   methods: {
+    // 查询列表
+    findLocalGoods() {
+      // 初始化页码设置
+      this.paramsData.page = 0;
+      this.currentPage = 1;
+      this.axios
+        .post(api.apiUrl.findAllGoodsListBySearch, this.qs(this.paramsData))
+        .then(res => {
+          this.tableData = res.data.data;
+          this.pageArgument.total = res.data.total;
+          this.pageArgument.totalPage = res.data.totalPage;
+        })
+        .catch(res => {
+          console.log("bad");
+        });
+    },
+    // 分页改变当前页
+    handleCurrentChange(val) {
+      this.paramsData.page = this.currentPage - 1;
+      // 默认请求一次
+      this.axios
+        .post(api.apiUrl.findAllGoodsListBySearch, this.qs(this.paramsData))
+        .then(res => {
+          this.tableData = res.data.data;
+          this.pageArgument.total = res.data.total;
+          this.pageArgument.totalPage = res.data.totalPage;
+        })
+        .catch(res => {
+          console.log("bad");
+        });
+    },
     // 修改一级分类
     selectGoodsList(params) {
       if (params) {
@@ -251,26 +313,32 @@ export default {
           });
       }
     },
-    // 查询列表
-    findLocalGoods(){
-      this.axios
-      .post(api.apiUrl.findAllGoodsListBySearch,this.qs(this.paramsData))
-      .then(res=>{
-        this.tableData = res.data.data
-        console.log(res);
-      })
-      .catch(res=>{
-        console.log('bad')
-      })
-    },
     // 新增商品
-    addGoods(){
+    addGoods() {
       this.dialogTableVisible = !this.dialogTableVisible;
     },
     // 修改查询的状态
-    changeStatus(paramsDataStatus){
-      console.log(paramsDataStatus)
+    changeStatus(paramsDataStatus) {
+      console.log(paramsDataStatus);
       this.paramsData.status = paramsDataStatus;
+      // 初始化页码设置
+      this.paramsData.page = 0;
+      this.currentPage = 1;
+      this.axios
+        .post(api.apiUrl.findAllGoodsListBySearch, this.qs(this.paramsData))
+        .then(res => {
+          this.tableData = res.data.data;
+          this.pageArgument.total = res.data.total;
+          this.pageArgument.totalPage = res.data.totalPage;
+        })
+        .catch(res => {
+          console.log("bad");
+        });
+    },
+    // 取消申请
+    handleChange(row) {
+      console.log(row);
+      this.$router.push({ path: '/goods/add', query: { id: row.goodsId }});
     },
     getHead() {
       return {
@@ -293,8 +361,7 @@ export default {
       } else {
         this.checked = false;
       }
-    },
-
+    }
   }
 };
 </script>
@@ -349,7 +416,7 @@ export default {
         }
         &.selected {
           background-color: $themeC;
-          color:white;
+          color: white;
         }
       }
     }

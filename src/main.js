@@ -28,7 +28,7 @@ Vue.use(VueAxios, axios)
 let loadingInstance;
 
 // 设置默认的请求超时时间
-axios.defaults.timeout = 10000;
+axios.defaults.timeout = 20000;
 
 // 添加请求拦截器
 axios.interceptors.request.use(config => {

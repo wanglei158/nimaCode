@@ -509,7 +509,6 @@ export default {
     // 选择平台分类
     selectGoodsList(params) {
       if (params) {
-        console.log("存在");
         this.axios
           .post(
             api.apiUrl.selectGoodsList,
@@ -518,7 +517,6 @@ export default {
             })
           )
           .then(res => {
-            console.log(res);
             for (var i = 0; i < res.data.length; i++) {
               const newCat = {
                 catId: res.data[i].catId,
@@ -528,10 +526,8 @@ export default {
             }
           })
           .catch(error => {
-            console.log("错误");
           });
       } else {
-        console.log("不存在");
         this.axios
           .post(
             api.apiUrl.selectGoodsList,
@@ -540,7 +536,6 @@ export default {
             })
           )
           .then(res => {
-            console.log(res);
             for (var i = 0; i < res.data.length; i++) {
               const newCat = {
                 catId: res.data[i].catId,
@@ -550,12 +545,34 @@ export default {
             }
           })
           .catch(error => {
-            console.log("错误");
           });
       }
     }
   },
-  mounted() {}
+  mounted() {
+    console.log(this.$route.query);
+    // if(this.$route.query.id){
+    //   this.axios.get(api.apiUrl.goodsGetDetail,this.$route.query)
+    //   .then(res=>{
+    //     console.log(res);
+    //   })
+    //   .catch(res=>{
+    //     console.log(res);
+    //   })
+    // }
+
+    if(this.$route.query.id){
+      this.axios.get(api.apiUrl.goodsGetDetail+'/'+this.$route.query.id,{
+        name:111
+      })
+      .then(res=>{
+        console.log(res);
+      })
+      .catch(res=>{
+        console.log(res);
+      })
+    }
+  }
 };
 </script>
 
