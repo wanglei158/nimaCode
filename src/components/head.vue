@@ -67,6 +67,9 @@ export default {
         this.userInfo.userName = res.data.userName;
       }
     })
+    .catch(res=>{
+      // console.log(res);
+    })
   },
   methods: {
     loginOut() {

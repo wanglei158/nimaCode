@@ -28,7 +28,7 @@ Vue.use(VueAxios, axios)
 let loadingInstance;
 
 // 设置默认的请求超时时间
-axios.defaults.timeout = 20000;
+axios.defaults.timeout = 200000;
 
 // 添加请求拦截器
 axios.interceptors.request.use(config => {
@@ -64,13 +64,16 @@ axios.interceptors.response.use(
     if (error.response) {
       console.log(error.response)
       Message({
-        message: error.response.data.msg+'请重新登录',
+        message: error.response.data.detail + '请重新登录',
         type: 'error',
         duration: 2000,
         onClose: function () {
+          console.log(error.response.status)
+
           // 401为权限问题，直接跳转到登录页面
           switch (error.response.status) {
-            case 401,400:
+            // 401，需要用户验证
+            case 401:
               store.commit('del_token'); // 401时，没有用户权限，删除session token,给store 删除token状态
               router.replace({
                 path: '/login',
@@ -78,6 +81,15 @@ axios.interceptors.response.use(
                   redirect: router.currentRoute.fullPath
                 } //登录成功后跳入浏览的当前页面
               })
+              // 登录超时
+            case 400:
+            store.commit('del_token'); // 401时，没有用户权限，删除session token,给store 删除token状态
+            router.replace({
+              path: '/login',
+              query: {
+                redirect: router.currentRoute.fullPath
+              } //登录成功后跳入浏览的当前页面
+            })
           }
         }
       });
@@ -98,6 +110,7 @@ axios.interceptors.response.use(
   });
 
 
+// 来关闭生产模式下给出的提示
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

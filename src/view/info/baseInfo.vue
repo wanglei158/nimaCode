@@ -47,7 +47,7 @@
             <el-option v-for="item in cityIdList" :key="item.areaId" :label="item.areaName" :value="item.areaId" >
             </el-option>
           </el-select>
-          <el-select v-model="companyIdList.areaId" placeholder="请选择" @focus.stop="findAreaList">
+          <el-select v-model="companyIdList.areaId" placeholder="请选择" @focus.stop="area_findList">
             <el-option v-for="item in areaIdList" :key="item.areaId" :label="item.areaName" :value="item.areaId" >
             </el-option>
           </el-select>
@@ -293,7 +293,7 @@ export default {
     // 查找商户的省
     findProvinceList(){
       this.axios
-      .post(api.apiUrl.findAreaList,this.qs({
+      .post(api.apiUrl.area_findList,this.qs({
         areaId:0
       }))
       .then(res=>{
@@ -305,7 +305,7 @@ export default {
     // 查找商户的市
     findCityList(){
       this.axios
-      .post(api.apiUrl.findAreaList,this.qs({
+      .post(api.apiUrl.area_findList,this.qs({
         areaId:this.companyIdList.provinceId
       }))
       .then(res=>{
@@ -315,9 +315,9 @@ export default {
       })
     },
     // 查找商户的区
-    findAreaList(){
+    area_findList(){
       this.axios
-      .post(api.apiUrl.findAreaList,this.qs({
+      .post(api.apiUrl.area_findList,this.qs({
         areaId:this.companyIdList.cityId
       }))
       .then(res=>{
@@ -330,7 +330,7 @@ export default {
     // 查找开户地区的市
     findAccountCityList(){
       this.axios
-      .post(api.apiUrl.findAreaList,this.qs({
+      .post(api.apiUrl.area_findList,this.qs({
         areaId:this.accountIdList.provinceId
       }))
       .then(res=>{

@@ -21,6 +21,7 @@ module.exports = {
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 2020, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     hot:true, // 热启动
+    host:'0.0.0.0', // 修改为可访问的形式
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
